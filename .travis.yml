@@ -1,29 +1,35 @@
 sudo: required
-dist: bionic
+dist: focal # Usar uma versão mais recente do Ubuntu
 language: csharp
 mono: none
 dotnet: 8.0.0
-python:
-  - "3.6"
-services: docker
+services:
+  - docker
+before_install:
+  - wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb
+  - sudo dpkg -i packages-microsoft-prod.deb
+  - sudo apt-get update
+  - sudo apt-get install -y apt-transport-https
+  - sudo apt-get update
+  - sudo apt-get install -y dotnet-sdk-8.0
 script:
   - docker-compose build
 before_deploy:
-  echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
+  - echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
 deploy:
   provider: script
   script:
-    docker tag docker-to-aws-with-dotnet:latest hanielsouza/docker-to-aws-with-dotnet:latest;
-    docker push hanielsouza/docker-to-aws-with-dotnet;
+    - docker tag docker-to-aws-with-dotnet:latest hanielsouza/docker-to-aws-with-dotnet:latest
+    - docker push hanielsouza/docker-to-aws-with-dotnet:latest
   on:
     branch: master
 after_success:
-  - sudo apt-get -y install python3-pip python-dev
+  - sudo apt-get -y install python3-pip python3-dev
   - sudo pip3 install -U setuptools
   - sudo pip3 install -U virtualenvwrapper
   - python3 -V
   - pip3 -V
-  - pip3 uninstall wheel
+  - pip3 uninstall -y wheel
   - pip3 install wheel
   - pip3 install awscli --upgrade --user
   - export PATH=$PATH:$HOME/.local/bin
