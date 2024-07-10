@@ -17,7 +17,7 @@ before_deploy:
   - echo "Logging in to Docker Hub"
   - echo "Haniel@123" | docker login --username "hanielsouza" --password-stdin
   if [ $? -eq 0 ]; then
-    echo "Login efetuado com sucesso"
+    echo "Login efetuado com sucesso siim"
     docker tag docker-to-aws-with-dotnet:latest hanielsouza/docker-to-aws-with-dotnet:latest
     docker push hanielsouza/docker-to-aws-with-dotnet:latest;
   else
