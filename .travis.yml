@@ -18,15 +18,14 @@ before_deploy:
   - echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
   - echo "Login Succeeded"
   - echo "DOCKER_USERNAME is set"
-  - echo "IMAGE_REPO_URL is set"
 deploy:
   provider: script
   script:
     - docker images
     - echo "Tagging image..."
-    - docker tag docker-to-aws-with-dotnet:latest $IMAGE_REPO_URL:latest
+    - docker tag docker-to-aws-with-dotnet:latest hanielsouza/docker-to-aws-with-dotnet:latest
     - echo "Pushing image to Docker Hub..."
-    - docker push $IMAGE_REPO_URL:latest
+    - docker push hanielsouza/docker-to-aws-with-dotnet:latest
   on:
     branch: master
 after_success:
@@ -40,7 +39,7 @@ after_success:
   - pip3 install awscli --upgrade --user
   - export PATH=$PATH:$HOME/.local/bin
   - eval $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
-  - docker tag docker-to-aws-with-dotnet:latest $IMAGE_REPO_URL:latest
-  - docker push $IMAGE_REPO_URL:latest
+  - docker tag docker-to-aws-with-dotnet:latest hanielsouza/docker-to-aws-with-dotnet:latest
+  - docker push hanielsouza/docker-to-aws-with-dotnet:latest
 notifications:
   email: false
