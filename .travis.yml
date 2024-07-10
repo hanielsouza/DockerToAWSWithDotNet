@@ -15,6 +15,9 @@ script:
   - docker-compose build
 before_deploy:
   - echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
+  - echo "DOCKER_USERNAME: $DOCKER_USERNAME"
+  - echo "DOCKER_PASSWORD: $DOCKER_PASSWORD"
+  - echo "IMAGE_REPO_URL: $IMAGE_REPO_URL"
 deploy:
   provider: script
   script:
