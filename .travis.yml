@@ -15,9 +15,8 @@ script:
   - docker-compose build
 before_deploy:
   - echo "Logging in to Docker Hub"
-  - echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
+  - echo "Haniel@123" | docker login --username "hanielsouza" --password-stdin
   - echo "Login Succeeded"
-  - echo "DOCKER_USERNAME is set"
 deploy:
   provider: script
   script:
