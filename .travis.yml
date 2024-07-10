@@ -16,7 +16,14 @@ script:
 before_deploy:
   - echo "Logging in to Docker Hub"
   - echo "Haniel@123" | docker login --username "hanielsouza" --password-stdin
-  - echo "Login Succeeded"
+  - if [ $? -eq 0 ]; then
+      echo "Login efetuado com sucesso"
+      - docker tag docker-to-aws-with-dotnet:latest hanielsouza/docker-to-aws-with-dotnet:latest
+      - docker push hanielsouza/docker-to-aws-with-dotnet:latest
+    else
+      echo "Erro ao fazer login no Docker Hub. Verifique as credenciais."
+      exit 1
+    fi
 deploy:
   provider: script
   script:
@@ -38,7 +45,6 @@ after_success:
   - pip3 install awscli --upgrade --user
   - export PATH=$PATH:$HOME/.local/bin
   - eval $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
-  - docker tag docker-to-aws-with-dotnet:latest hanielsouza/docker-to-aws-with-dotnet:latest
-  - docker push hanielsouza/docker-to-aws-with-dotnet:latest
+  
 notifications:
   email: false
