@@ -2,8 +2,10 @@ sudo: required
 dist: focal
 language: csharp
 mono: none
+
 services:
   - docker
+
 before_install:
   - wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb
   - sudo dpkg -i packages-microsoft-prod.deb
@@ -11,11 +13,15 @@ before_install:
   - sudo apt-get install -y apt-transport-https
   - sudo apt-get update
   - sudo apt-get install -y dotnet-sdk-8.0
+
 script:
   - docker-compose build
+
 before_deploy:
   - echo "Logging in to Docker Hub"
   - echo "Haniel@123" | docker login --username "hanielsouza" --password-stdin
+  - echo "Login Succeeded"
+
 deploy:
   provider: script
   script:
@@ -26,6 +32,7 @@ deploy:
     - docker push hanielsouza/docker-to-aws-with-dotnet:latest
   on:
     branch: master
+
 after_success:
   - sudo apt-get -y install python3-pip python3-dev
   - sudo pip3 install -U setuptools
@@ -37,6 +44,8 @@ after_success:
   - pip3 install awscli --upgrade --user
   - export PATH=$PATH:$HOME/.local/bin
   - eval $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
-  
+  - docker tag docker-to-aws-with-dotnet:latest hanielsouza/docker-to-aws-with-dotnet:latest
+  - docker push hanielsouza/docker-to-aws-with-dotnet:latest
+
 notifications:
   email: false
