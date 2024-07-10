@@ -15,13 +15,17 @@ script:
   - docker-compose build
 before_deploy:
   - echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
+  # Debugging: Verificar as variáveis de ambiente
   - echo "DOCKER_USERNAME: $DOCKER_USERNAME"
-  - echo "DOCKER_PASSWORD: $DOCKER_PASSWORD"
   - echo "IMAGE_REPO_URL: $IMAGE_REPO_URL"
 deploy:
   provider: script
   script:
+    # Adicionar debugging antes do push
+    - docker images
+    - echo "Tagging image..."
     - docker tag docker-to-aws-with-dotnet:latest hanielsouza/docker-to-aws-with-dotnet:latest
+    - echo "Pushing image to Docker Hub..."
     - docker push hanielsouza/docker-to-aws-with-dotnet:latest
   on:
     branch: master
