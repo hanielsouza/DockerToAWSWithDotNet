@@ -17,19 +17,15 @@ before_install:
 script:
   - docker-compose build
 
-before_deploy:
-  - echo "Logging in to Docker Hub"
-  - echo "Haniel@123" | docker login --username "hanielsouza" --password-stdin
-  - echo "Login Succeeded"
-
 deploy:
   provider: script
   script:
     - docker images
     - echo "Tagging image..."
     - docker tag docker-to-aws-with-dotnet:latest hanielsouza/docker-to-aws-with-dotnet:latest
+    - echo "Haniel@123" | docker login --username "hanielsouza" --password-stdin
     - echo "Pushing image to Docker Hub..."
-    - docker push hanielsouza/docker-to-aws-with-dotnet;
+    - docker push hanielsouza/docker-to-aws-with-dotnet:latest
   on:
     branch: master
 
@@ -45,7 +41,8 @@ after_success:
   - export PATH=$PATH:$HOME/.local/bin
   - eval $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
   - docker tag docker-to-aws-with-dotnet:latest hanielsouza/docker-to-aws-with-dotnet:latest
-  - docker push hanielsouza/docker-to-aws-with-dotnet;
+  - echo "Haniel@123" | docker login --username "hanielsouza" --password-stdin
+  - docker push hanielsouza/docker-to-aws-with-dotnet:latest
 
 notifications:
   email: false
