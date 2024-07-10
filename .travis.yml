@@ -14,7 +14,9 @@ before_install:
 script:
   - docker-compose build
 before_deploy:
+  - echo "Logging in to Docker Hub"
   - echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
+  - echo "Login Succeeded"
   - echo "DOCKER_USERNAME is set"
   - echo "IMAGE_REPO_URL is set"
 deploy:
