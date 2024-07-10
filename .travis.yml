@@ -29,7 +29,7 @@ deploy:
     - echo "Tagging image..."
     - docker tag docker-to-aws-with-dotnet:latest hanielsouza/docker-to-aws-with-dotnet:latest
     - echo "Pushing image to Docker Hub..."
-    - docker push hanielsouza/docker-to-aws-with-dotnet:latest
+    - docker push hanielsouza/docker-to-aws-with-dotnet;
   on:
     branch: master
 
@@ -45,7 +45,7 @@ after_success:
   - export PATH=$PATH:$HOME/.local/bin
   - eval $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
   - docker tag docker-to-aws-with-dotnet:latest hanielsouza/docker-to-aws-with-dotnet:latest
-  - docker push hanielsouza/docker-to-aws-with-dotnet:latest
+  - docker push hanielsouza/docker-to-aws-with-dotnet;
 
 notifications:
   email: false
