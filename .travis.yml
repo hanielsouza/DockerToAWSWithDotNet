@@ -30,19 +30,17 @@ deploy:
     branch: master
 
 after_success:
-  - sudo apt-get -y install python3-pip python3-dev
+  - sudo apt-get -y install python3-pip python-dev
   - sudo pip3 install -U setuptools
   - sudo pip3 install -U virtualenvwrapper
   - python3 -V
   - pip3 -V
-  - pip3 uninstall -y wheel
+  - pip3 uninstall wheel
   - pip3 install wheel
   - pip3 install awscli --upgrade --user
   - export PATH=$PATH:$HOME/.local/bin
   - eval $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
-  - docker tag docker-to-aws-with-dotnet:latest hanielsouza/docker-to-aws-with-dotnet:latest
-  - echo "Haniel@123" | docker login --username "hanielsouza" --password-stdin
-  - docker push hanielsouza/docker-to-aws-with-dotnet:latest
-
+  - docker tag docker-to-aws-with-dotnet:latest $IMAGE_REPO_URL:latest
+  - docker push $IMAGE_REPO_URL:latest
 notifications:
   email: false
