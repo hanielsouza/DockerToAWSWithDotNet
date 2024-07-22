@@ -73,7 +73,8 @@ builder.Services.AddCors(options => options.AddDefaultPolicy(builder =>
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c => {
+builder.Services.AddSwaggerGen(c =>
+{
     c.SwaggerDoc(appVersion,
         new OpenApiInfo
         {
@@ -91,14 +92,14 @@ builder.Services.AddSwaggerGen(c => {
 var connection = builder.Configuration["MySQLConnection:MySQLConnectionString"];
 builder.Services.AddDbContext<MySQLContext>(options => options.UseMySql(
     connection,
-    new MySqlServerVersion(new Version(5, 7,22)),
+    new MySqlServerVersion(new Version(8, 0, 32)),
     mysqlOptions => mysqlOptions.EnableRetryOnFailure())
 );
 
-//if (builder.Environment.IsDevelopment())
-//{
+if (builder.Environment.IsDevelopment())
+{
     MigrateDatabase(connection);
-//}
+}
 
 builder.Services.AddMvc(options =>
 {
@@ -143,7 +144,7 @@ app.UseCors();
 
 app.UseSwagger();
 
-app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", $"{appName} - {appVersion}");});
+app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", $"{appName} - {appVersion}"); });
 
 var option = new RewriteOptions();
 option.AddRedirect("^$", "swagger");
