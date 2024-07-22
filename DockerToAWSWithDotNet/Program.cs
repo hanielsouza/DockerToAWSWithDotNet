@@ -27,6 +27,11 @@ var appName = "REST API's RESTFul do 0 à Azure com ASP.NET Core 8 e Docker";
 var appVersion = "v1";
 var appDescription = $"REST API RESTful developed in course '{appName}'";
 
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(80); // para porta 80
+});
+
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 var tokenConfigurations = new TokenConfiguration();
 

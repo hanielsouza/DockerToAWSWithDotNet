@@ -18,4 +18,6 @@ RUN dotnet publish "DockerToAWSWithDotNet.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+ENV ASPNETCORE_ENVIRONMENT=Production
+ENV ASPNETCORE_URLS=http://+:80
 ENTRYPOINT ["dotnet", "DockerToAWSWithDotNet.dll"]
