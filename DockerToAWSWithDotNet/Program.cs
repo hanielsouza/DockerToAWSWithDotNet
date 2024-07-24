@@ -23,7 +23,7 @@ using System.Text;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
-var appName = "REST API's RESTFul do 0 à Azure com ASP.NET Core 8 e Docker";
+var appName = "REST API's RESTFul - Foo Bar";
 var appVersion = "v1";
 var appDescription = $"REST API RESTful developed in course '{appName}'";
 
